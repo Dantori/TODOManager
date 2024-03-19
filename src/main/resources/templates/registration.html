@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="utf-8">
+    <title>Регистрация</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form {
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .reg {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form class="form-signin" action="/registration" method="POST" th:object="${user}">
+        <h2 class="mb-3 font-weight-normal">Регистрация</h2>
+        <div class="form-label-group reg">
+            <input type="text" th:field="*{username}" id="inputUsername" class="form-control"
+                   placeholder="Имя пользователя"
+                   autofocus="true" required>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+            <span th:utext="${usernameError}"></span>
+        </div>
+        <div class="form-label-group reg">
+            <input type="password" th:field="*{password}" id="inputPassword" class="form-control" placeholder="Пароль"
+                   required>
+        </div>
+        <div class="form-label-group reg">
+            <input type="password" th:field="*{passwordConfirm}" id="inputConfirmPassword" class="form-control"
+                   placeholder="Подтверждение пароля" required>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <span th:utext="${passwordError}"></span>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block reg" type="submit">Зарегистрироваться</button>
+    </form>
+    <a href="/" class="mt-3 d-block text-center">Главная</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
