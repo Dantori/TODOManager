@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.trofimov.todomanager.domain.account.Role;
 import ru.trofimov.todomanager.domain.account.User;
 import ru.trofimov.todomanager.repository.UserRepository;
 import ru.trofimov.todomanager.service.UserService;
