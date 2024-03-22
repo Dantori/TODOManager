@@ -5,8 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.trofimov.todomanager.domain.account.User;
-import ru.trofimov.todomanager.domain.todo.Todo;
 import ru.trofimov.todomanager.service.TodoService;
+import ru.trofimov.todomanager.web.dto.TodoDto;
+import ru.trofimov.todomanager.web.mapper.TodoMapper;
 
 import java.util.List;
 
@@ -15,23 +16,25 @@ import java.util.List;
 public class TodoController {
 
     private final TodoService todoService;
+    private final TodoMapper todoMapper;
 
-    public TodoController(TodoService todoService) {
+    public TodoController(TodoService todoService, TodoMapper todoMapper) {
         this.todoService = todoService;
+        this.todoMapper = todoMapper;
     }
 
     @GetMapping
     public String getTodoList(Model model, @AuthenticationPrincipal User user) {
-        List<Todo> todos = todoService.getAllByUserId(user.getId());
+        List<TodoDto> todos = todoMapper.toDto(todoService.getAllByUserId(user.getId()));
         model.addAttribute("todos", todos);
-        model.addAttribute("newTodo", new Todo());
+        model.addAttribute("newTodo", new TodoDto());
         return "todo";
     }
 
     @PostMapping("/add")
-    public String addTodo(@ModelAttribute("newTodo") Todo newTodo, @AuthenticationPrincipal User user) {
-        newTodo.setUser(user);
-        todoService.addTodo(newTodo);
+    public String addTodo(@ModelAttribute("newTodo") TodoDto todoDto, @AuthenticationPrincipal User user) {
+        todoDto.setUser(user);
+        todoService.addTodo(todoMapper.toEntity(todoDto));
         return "redirect:/todos";
     }
 
