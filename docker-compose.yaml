@@ -1,24 +1,28 @@
-version: '3'
+version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
-    container_name: todomanager
-    depends_on:
-      - db
-    entrypoint:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/todo?currentSchema=s_todo
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=admin
-    ports:
-      - '8080:8080'
   db:
     image: postgres:16.0
     container_name: postgres
-    entrypoint:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=todo
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "todo"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "admin"
     volumes:
       - ./src/main/resources/db-init/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+
+  web:
+    image: server_image
+    container_name: todomanager
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/todo?currentSchema=s_todo
