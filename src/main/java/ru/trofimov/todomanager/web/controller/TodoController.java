@@ -39,9 +39,7 @@ public class TodoController {
 
     @PostMapping("/{id}/toggle")
     public String toggleTodoStatus(@PathVariable("id") Long id) {
-        Todo todo = todoService.getById(id);
-        todo.setCompleted(!todo.isCompleted());
-        todoService.addTodo(todo);
+        todoService.setStatus(id);
         return "redirect:/todos";
     }
 

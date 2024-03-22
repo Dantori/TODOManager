@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.trofimov.todomanager.domain.account.Role;
 import ru.trofimov.todomanager.domain.account.User;
 import ru.trofimov.todomanager.repository.UserRepository;
+import ru.trofimov.todomanager.service.EmailService;
 import ru.trofimov.todomanager.service.UserService;
 
 import java.util.Collections;
@@ -20,11 +21,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @Override
@@ -37,11 +40,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public boolean addUser(User user) {
         Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
-        if(userFromDB.isPresent()) return false;
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return true;
+        if(userFromDB.isPresent()) {
+            return false;
+        } else {
+            user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+
+            String subj = "TODO Manager. Регистрация";
+            String msg = "Здравствуйте, " + user.getUsername() + "!" +
+                    "\nВаш аккаунт успешно зарегистрирован" +
+                    "\nСпасибо за то, что пользуйтесь нашим приложением :)";
+
+            emailService.sendEmailToUser(user.getUsername(), subj, msg);
+
+            return true;
+        }
     }
 
     @Override

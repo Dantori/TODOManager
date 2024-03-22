@@ -4,17 +4,31 @@ spring:
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: never
   jpa:
-    hibernate:
-      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:demo_data.sql
-      continue-on-error: false
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yaml
+    enabled: true
+    default-schema: s_todo
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bookshareapp598@gmail.com
+    password: njveflemejirtejk
+    properties:
+      mail:
+        debug: false
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true

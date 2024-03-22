@@ -3,15 +3,17 @@ package ru.trofimov.todomanager.domain.todo;
 import ru.trofimov.todomanager.domain.account.User;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "t_todo")
+@Table(name = "t_todo", schema = "s_todo")
 public class Todo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    private Date date;
     private boolean completed;
 
     @ManyToOne
@@ -51,5 +53,13 @@ public class Todo {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

@@ -47,6 +47,7 @@
             <thead>
             <tr>
                 <th style="width: 40%">Задача</th>
+                <th style="width: 20%">Создана</th>
                 <th style="width: 20%">Статус</th>
                 <th style="width: 40%">Действие</th>
             </tr>
@@ -54,6 +55,7 @@
             <tbody>
             <tr th:each="todo : ${todos}">
                 <td th:text="${todo.description}"></td>
+                <td th:text="${todo.date}"></td>
                 <td class="text-center">
                     <span th:if="${todo.completed}" class="text-success">Готово</span>
                     <span th:unless="${todo.completed}" class="text-warning">В процессе</span>
