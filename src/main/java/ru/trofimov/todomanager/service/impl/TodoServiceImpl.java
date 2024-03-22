@@ -1,6 +1,5 @@
 package ru.trofimov.todomanager.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.trofimov.todomanager.domain.exception.TodoNotFoundException;
 import ru.trofimov.todomanager.domain.todo.Todo;
@@ -18,7 +17,6 @@ public class TodoServiceImpl implements TodoService {
     private final TodoRepository todoRepository;
     private final EmailService emailService;
 
-    @Autowired
     public TodoServiceImpl(TodoRepository todoRepository, EmailService emailService) {
         this.todoRepository = todoRepository;
         this.emailService = emailService;
