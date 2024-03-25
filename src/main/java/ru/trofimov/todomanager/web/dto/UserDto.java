@@ -25,6 +25,14 @@ public class UserDto {
 
     private Set<Role> roles;
 
+    public UserDto() {}
+
+    public UserDto(String username, String password, String passwordConfirm) {
+        this.username = username;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+    }
+
     public Long getId() {
         return id;
     }
