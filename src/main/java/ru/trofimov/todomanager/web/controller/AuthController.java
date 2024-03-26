@@ -36,11 +36,11 @@ public class AuthController {
             model.addAttribute("usernameError", "A user with this username already exists!");
             return "registration";
         }
-        return "/login";
+        return "login";
     }
 
     @PostMapping("/logout")
     public String logout() {
-        return "/login";
+        return "login";
     }
 }
